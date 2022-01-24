@@ -17,11 +17,11 @@ function Component({ outRef, prop }) {
     const inRef = useRef()
 
     useRefDepsEffect(() => {
-        const el = outRef.current
         function onClick() {
             const value = inRef.current[prop]
             /* ... */
         }
+        const el = outRef.current
         el.addEventListener('click', onClick)
         return () => {
             el.removeEventListener('click', onClick)
