@@ -15,8 +15,8 @@ function createRefDepsHook(useEffectLike: UseEffectLike) {
                 prevDeps &&
                 refDeps.every((v, i) => {
                     const prev = prevDeps[i]
-                    if (isRefObj(v) && isRefObj(prev)) {
-                        return v.current === prev.current
+                    if (isRefObj(v)) {
+                        return v.current === prev
                     }
                     return v === prev
                 })
@@ -26,7 +26,7 @@ function createRefDepsHook(useEffectLike: UseEffectLike) {
             cleanupRef.current?.()
             const f = effect()
             cleanupRef.current = typeof f === 'function' ? f : undefined
-            prevDepsRef.current = refDeps
+            prevDepsRef.current = refDeps.map(v => (isRefObj(v) ? v.current : v))
         })
         useEffectLike(() => {
             return () => cleanupRef.current?.()
