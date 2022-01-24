@@ -1,7 +1,6 @@
 import { test, expect, vitest } from 'vitest'
 import { useRefDepsEffect } from '../src/index'
-import { renderHook, act } from '@testing-library/react-hooks'
-import { useRef } from 'react'
+import { renderHook } from '@testing-library/react-hooks'
 
 test('basic', () => {
     const log = vitest.fn()

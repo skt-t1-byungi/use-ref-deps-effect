@@ -11,16 +11,7 @@ function createRefDepsHook(useEffectLike: UseEffectLike) {
         const prevDepsRef = useRef<DependencyList>()
         useEffectLike(() => {
             const prevDeps = prevDepsRef.current
-            if (
-                prevDeps &&
-                refDeps.every((v, i) => {
-                    const prev = prevDeps[i]
-                    if (isRefObj(v)) {
-                        return v.current === prev
-                    }
-                    return v === prev
-                })
-            ) {
+            if (prevDeps && refDeps.every((v, i) => (isRefObj(v) ? v.current : v) === prevDeps[i])) {
                 return
             }
             cleanupRef.current?.()
