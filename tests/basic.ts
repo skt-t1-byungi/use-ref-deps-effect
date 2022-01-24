@@ -3,24 +3,24 @@ import { useRefDepsEffect } from '../src/index'
 import { renderHook } from '@testing-library/react-hooks'
 
 test('basic', () => {
-    const log = vitest.fn()
+    const t = vitest.fn()
     let ref = { current: 1 }
     const { rerender } = renderHook(() => {
         useRefDepsEffect(() => {
             const { current } = ref
-            log('call', current)
+            t('call', current)
             return () => {
-                log('clear', current)
+                t('clear', current)
             }
         }, [ref])
     })
-    expect(log.mock.calls).toEqual([['call', 1]])
-    log.mockClear()
+    expect(t.mock.calls).toEqual([['call', 1]])
+    t.mockClear()
     rerender()
-    expect(log.mock.calls).toEqual([])
+    expect(t.mock.calls).toEqual([])
     ref.current++
     rerender()
-    expect(log.mock.calls).toEqual([
+    expect(t.mock.calls).toEqual([
         ['clear', 1],
         ['call', 2],
     ])

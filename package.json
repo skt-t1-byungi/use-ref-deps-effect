@@ -3,6 +3,7 @@
     "description": "Effect hooks that support \"ref.current\" dependency",
     "version": "0.0.2",
     "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "exports": {
         "require": "./dist/index.js",
         "import": "./dist/index.mjs"
