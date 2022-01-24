@@ -1,6 +1,6 @@
 {
     "name": "use-ref-deps-effect",
-    "description": "",
+    "description": "Effect hooks that support \"ref.current\" dependency",
     "version": "0.0.1",
     "main": "dist/index.js",
     "exports": {
@@ -10,13 +10,16 @@
     "scripts": {
         "build": "tsup src/index.ts --format esm,cjs --dts",
         "test": "vitest run",
-        "testw": "vitest"
+        "testw": "vitest",
+        "clean": "rimraf dist",
+        "prepack": "npm run clean && npm run build"
     },
     "keywords": [
         "react",
         "hooks",
         "ref",
-        "deps"
+        "deps",
+        "dependencies"
     ],
     "author": {
         "name": "byungi",
@@ -24,9 +27,11 @@
     },
     "license": "MIT",
     "devDependencies": {
+        "@testing-library/react-hooks": "^7.0.2",
         "@types/react": "^17.0.38",
         "prettier": "^2.5.1",
         "react": "^17.0.2",
+        "rimraf": "^3.0.2",
         "tsup": "^5.11.11",
         "typescript": "^4.5.5",
         "vite": "^2.7.13",
