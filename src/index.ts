@@ -5,8 +5,8 @@ export const useRefDepsLayoutEffect = createRefDepsHook(useLayoutEffect)
 
 type UseEffectLike = (effect: EffectCallback, deps?: DependencyList) => void
 
-function createRefDepsHook(useEffectLike: UseEffectLike) {
-    return function (effect: EffectCallback, refDeps: DependencyList) {
+export function createRefDepsHook(useEffectLike: UseEffectLike) {
+    return (effect: EffectCallback, refDeps: DependencyList) => {
         const cleanupRef = useRef<(() => void) | undefined>()
         const prevDepsRef = useRef<DependencyList>()
         useEffectLike(() => {
@@ -19,9 +19,7 @@ function createRefDepsHook(useEffectLike: UseEffectLike) {
             cleanupRef.current = typeof f === 'function' ? f : undefined
             prevDepsRef.current = refDeps.map(v => (isRefObj(v) ? v.current : v))
         })
-        useEffectLike(() => {
-            return () => cleanupRef.current?.()
-        }, [])
+        useEffectLike(() => () => cleanupRef.current?.(), [])
     }
 }
 
