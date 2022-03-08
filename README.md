@@ -30,6 +30,10 @@ npm i use-ref-deps-effect
 
 ### useRefDepsEffect(callback, deps)
 
+```js
+import { useRefDepsEffect } from 'use-ref-deps-effect'
+```
+
 This is an Effect hook that supports `ref.current` dependencies.
 
 ### createRefDepsHook(useEffectLike)
