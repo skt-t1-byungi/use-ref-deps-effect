@@ -4,7 +4,8 @@ import { renderHook } from '@testing-library/react-hooks'
 
 test('basic', () => {
     const t = vitest.fn()
-    let ref = { current: 1 }
+    const ref = { current: 1 }
+
     const { rerender } = renderHook(() => {
         useRefDepsEffect(() => {
             const { current } = ref
@@ -14,10 +15,13 @@ test('basic', () => {
             }
         }, [ref])
     })
+
     expect(t.mock.calls).toEqual([['call', 1]])
     t.mockClear()
+
     rerender()
     expect(t.mock.calls).toEqual([])
+
     ref.current++
     rerender()
     expect(t.mock.calls).toEqual([

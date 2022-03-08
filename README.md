@@ -1,40 +1,10 @@
 # use-ref-deps-effect
 
-Effect hooks that support "ref.current" dependency
-
-## Install
-
-```sh
-npm i use-ref-deps-effect
-```
-
-## Example
-
-```js
-import { useRefDepsEffect } from 'use-ref-deps-effect'
-
-function Component({ outRef, prop }) {
-    const inRef = useRef()
-
-    useRefDepsEffect(() => {
-        function onClick() {
-            const value = inRef.current[prop]
-            /* ... */
-        }
-        const el = outRef.current
-        el.addEventListener('click', onClick)
-        return () => {
-            el.removeEventListener('click', onClick)
-        }
-    }, [outRef, inRef, prop])
-
-    /* ... */
-}
-```
+Effect hooks that support "ref.current" dependencies
 
 ## Motivation
 
-The `ref.current` for the DOM element cannot be put in the `useEffect` dependencies because it is filled after rendering.
+`ref.current` for DOM Element is `null` until the rendering is over. So it can not be used as a dependency of useEffect.
 
 ```js
 useEffect(() => {
@@ -42,12 +12,61 @@ useEffect(() => {
 }, [ref.current]) // <= not working !
 ```
 
-There are alternatives, but they are not familiar with React's general mental model. `use-ref-deps-effect` lazy evaluates the dependencies. Therefore, it supports the dependency of `ref.current` and maintains the usability of `useEffect`.
+There are some known alternatives, but they are not familiar with the react mental model. `use-ref-deps-effect` provides a mental model similar to `useEffect` by lazy evaluation of `ref.current` dependencies.
 
-## API List
+```js
+useRefDepsEffect(() => {
+    /* ... */
+}, [ref]) // <= If ref.current changes, it runs.
+```
 
--   useRefDepsEffect
--   useRefDepsLayoutEffect
+## Install
+
+```sh
+npm i use-ref-deps-effect
+```
+
+## API
+
+### useRefDepsEffect(callback, deps)
+
+This is an Effect hook that supports `ref.current` dependencies.
+
+### createRefDepsHook(useEffectLike)
+
+This function uses the same API hook as the `useEffect` to create a hook that supports `ref.current`.
+
+```js
+import { createRefDepsHook } from 'use-ref-deps-effect'
+import { useLayoutEffect } from 'react'
+
+const useRefDepsLayoutEffect = createRefDepsHook(useLayoutEffect)
+```
+
+## caution
+
+### Do not cleanup using `ref.current` directly.
+
+`ref.current` is always latest. To do cleanup, you need to capture the previous value in advance.
+
+```js
+// 🙅 Bad
+useRefDepsEffect(() => {
+    ref.current.addEventListener(/* ... */)
+    return () => {
+        ref.current.removeEventListener(/* ... */)
+    }
+}, [ref])
+
+// ✅ Good
+useRefDepsEffect(() => {
+    const el = ref.current
+    el.addEventListener(/* ... */)
+    return () => {
+        el.removeEventListener(/* ... */)
+    }
+}, [ref])
+```
 
 ## License
 
