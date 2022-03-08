@@ -43,7 +43,7 @@ import { useLayoutEffect } from 'react'
 const useRefDepsLayoutEffect = createRefDepsHook(useLayoutEffect)
 ```
 
-## caution
+## Caution
 
 ### Do not cleanup using `ref.current` directly.
 
