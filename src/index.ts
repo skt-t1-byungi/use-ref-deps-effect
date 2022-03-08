@@ -9,16 +9,18 @@ export function createRefDepsHook(useEffectLike: UseEffectLike) {
     return (effect: EffectCallback, refDeps: DependencyList) => {
         const cleanupRef = useRef<(() => void) | undefined>()
         const prevDepsRef = useRef<DependencyList>()
+
         useEffectLike(() => {
             const prevDeps = prevDepsRef.current
-            if (prevDeps && refDeps.every((v, i) => (isRefObj(v) ? v.current : v) === prevDeps[i])) {
+            if (prevDeps && refDeps.every((v, i) => Object.is(isRefObj(v) ? v.current : v, prevDeps[i]))) {
                 return
             }
+
             cleanupRef.current?.()
-            const f = effect()
-            cleanupRef.current = typeof f === 'function' ? f : undefined
+            cleanupRef.current = effect()!
             prevDepsRef.current = refDeps.map(v => (isRefObj(v) ? v.current : v))
         })
+
         useEffectLike(() => () => cleanupRef.current?.(), [])
     }
 }
