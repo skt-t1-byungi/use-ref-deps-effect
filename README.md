@@ -1,5 +1,7 @@
 # use-ref-deps-effect
 
+[![npm version](https://badge.fury.io/js/use-ref-deps-effect.svg)](https://www.npmjs.com/package/use-ref-deps-effect)
+
 Effect hooks that support "ref.current" dependencies
 
 ## Motivation
