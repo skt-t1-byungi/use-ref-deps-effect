@@ -1,7 +1,7 @@
 {
     "name": "use-ref-deps-effect",
     "description": "Effect hooks that support \"ref.current\" dependencies",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "repository": {
