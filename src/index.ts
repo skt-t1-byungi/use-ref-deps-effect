@@ -25,5 +25,5 @@ export function createRefDepsHook(useEffectLike: UseEffectLike) {
 }
 
 function isRefObj(ref: any): ref is RefObject<any> {
-    return (ref !== null || ref !== undefined) && 'current' in ref
+    return ref !== null && ref !== undefined && 'current' in ref
 }
