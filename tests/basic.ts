@@ -13,7 +13,7 @@ test('basic', () => {
             return () => {
                 t('clear', current)
             }
-        }, [ref])
+        }, [ref, null])
     })
 
     expect(t.mock.calls).toEqual([['call', 1]])
